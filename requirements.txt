@@ -1,0 +1,6 @@
+adf
+Django==3.2.12
+djangorestframework==3.13.1
+django-filter==21.1
+Markdown==3.3.6
+PyYAML>=6.0

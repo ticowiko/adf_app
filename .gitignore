@@ -1,0 +1,7 @@
+/media/
+/static/
+/.idea/
+*.pyc
+/db.sqlite3
+/adf_web_ui/migrations/0*_*.py
+/secret_key.txt

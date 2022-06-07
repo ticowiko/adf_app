@@ -1,0 +1,125 @@
+{% verbatim %}
+<template id="batch-info">
+    <div style="width: 100%; height: var(--tab-content-height);">
+        <div class="batch-title">
+            <button v-on:click="$root.set_step_info(null, null, null); $root.set_batch_id(null); $root.set_batch_status(null); $root.fetch_flow_state(data.flow_config_id)">X</button>
+            STEP : {{ data.flow_name }} / {{ data.step_name }}
+        </div>
+        <div style="width: 100%; overflow: hidden;">
+            <div class="batch-info-display">
+                <table class="batch-info-table">
+                    <colgroup>
+                        <col span="1" style="width: 20%;">
+                        <col span="1" style="width: 80%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>
+                                <button v-on:click="$root.set_batch_id(null); $root.set_batch_status(null); $root.update_batch_downstream(); $root.fetch_step_state();">REFRESH</button>
+                            </th>
+                            <th>
+                                <div style="height: 50%;">
+                                    BATCH IDS
+                                </div>
+                                <div>
+                                    {{ data.flow_name }} / {{ data.step_name }}
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tr v-for="[status, batch_ids] in Object.entries(data.step_state)">
+                        <td><button v-on:click="$root.set_batch_status(status);">{{ status.toUpperCase() }}</button></td>
+                        <td>
+                            <span v-for="current_batch_id in batch_ids" :class="'batch-id ' + status" v-on:click="$root.set_batch_id(current_batch_id);">
+                                {{ current_batch_id }}
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="batch-info-display">
+                <table class="batch-info-table">
+                    <colgroup>
+                        <col span="1" style="width: 30%;">
+                        <col span="1" style="width: 70%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>
+                                <button class="alert-button" v-on:click="$root.reset_batches();">RESET</button>
+                            </th>
+                            <th>
+                                <div style="heigh: 33%;">
+                                    DOWNSTREAM
+                                </div>
+                                <div style="heigh: 33%;">
+                                {{ data.flow_name }} / {{ data.step_name }}
+                                </div>
+                                <div style="heigh: 33%;" v-if="data.batch_id !== null">
+                                    BATCH : {{ data.batch_id }}
+                                </div>
+                                <div style="heigh: 33%;" v-if="data.batch_status !== null">
+                                    STATUS : {{ data.batch_status.toUpperCase() }}
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tr v-for="step_batches in data.batch_downstream">
+                        <template v-if="step_batches[1].length !== 0">
+                            <td>
+                                <button v-on:click="$root.set_step_info(step_batches[0].flow_name, step_batches[0].name);">{{ step_batches[0].flow_name }} / {{ step_batches[0].name }}</button>
+                            </td>
+                            <td>
+                                <span v-for="step_batch in step_batches[1]" class="batch-id" v-on:click="$root.set_step_info(step_batches[0].flow_name, step_batches[0].name); $root.set_batch_id(step_batch);">
+                                    {{ step_batch }}
+                                </span>
+                            </td>
+                        </template>
+                    </tr>
+                </table>
+            </div>
+            <div class="batch-info-display"style="width: 40%;">
+                <template v-if="data.batch_info !== null">
+                    <table class="batch-info-table">
+                        <colgroup>
+                            <col span="1" style="width: 20%;">
+                            <col span="1" style="width: 80%;">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>
+                                    <button v-on:click="$root.fetch_batch_data()">FETCH DATA</button>
+                                </th>
+                                <th>
+                                    Batch Info
+                                </th>
+                            </tr>
+                        </thead>
+                        <tr v-for="[key, val] in Object.entries(data.batch_info)" v-if="key !== 'data'">
+                            <th>{{ key }}</th>
+                            <td style="padding: 10px;">{{ val }}</td>
+                        </tr>
+                    </table>
+                    <div v-if="$root.get_batch_data_columns().length !== 0">
+                        <table class="batch-info-table">
+                            <thead>
+                                <th v-for="col in $root.get_batch_data_columns()" style="background-color: var(--main-color);">
+                                    {{ col }}
+                                </th>
+                            </thead>
+                            <tr v-for="row in data.batch_data">
+                                <td v-for="col in $root.get_batch_data_columns()">
+                                    {{ row[col] }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div v-else>
+                        NO DATA
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>
+{% endverbatim %}

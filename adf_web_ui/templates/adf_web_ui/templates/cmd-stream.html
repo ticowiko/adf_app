@@ -1,0 +1,33 @@
+{% verbatim %}
+<template id="cmd-stream">
+    <div class="cmd-display" style="overflow: visible;">
+        <div class="cmd-stream-title">
+            <span style="display: inline-block; vertical-align:middle;">
+                <div>
+                    <button v-on:click="$root.set_flow_operation_stream('stdout')">STDOUT</button>
+                </div>
+                <div>
+                    <button v-on:click="$root.set_flow_operation_stream('stderr')">STDERR</button>
+                </div>
+            </span>
+            <span style="display: inline-block; vertical-align:middle;">
+                <div class="cmd-stream-current">
+                    <a v-if="data.flow_operation !== null" :href="data.flow_operation[data.flow_operation_stream]">{{ data.flow_operation_stream.toUpperCase() }}</a>
+                    <template v-else>{{ data.flow_operation_stream.toUpperCase() }}</template>
+                </div>
+            </span>
+        </div>
+        <div v-if="data.flow_operation_stream === 'stdout'" class="cmd-stream">
+            <pre v-if="data.flow_operation !== null" style="white-space: pre-line;">{{ data.n_stream_lines ? data.flow_operation.stdout_details.split('\n').slice(-data.n_stream_lines).join('\n') : data.flow_operation.stdout_details }}</pre>
+        </div>
+        <div v-else-if="data.flow_operation_stream === 'stderr'" class="cmd-stream">
+            <pre v-if="data.flow_operation !== null" style="white-space: pre-line;">{{ data.n_stream_lines ? data.flow_operation.stderr_details.split('\n').slice(-data.n_stream_lines).join('\n') : data.flow_operation.stderr_details }}</pre>
+        </div>
+        <div v-else class="cmd-stream">
+            <h2>
+                Unknown stream "{{ data.flow_operation_stream }}".
+            </h2>
+        </div>
+    </div>
+</template>
+{% endverbatim %}

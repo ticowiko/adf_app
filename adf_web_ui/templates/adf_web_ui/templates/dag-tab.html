@@ -1,0 +1,30 @@
+{% verbatim %}
+<template id="dag-tab">
+    <div v-if="'errors' in data.flow_config.flow_dag">
+        <div v-if="'validation_errors' in data.flow_config.flow_dag.errors">
+            <h3>Validation Errors</h3>
+            <ul>
+                <li v-for="validation_error in data.flow_config.flow_dag.errors.validation_errors">{{ validation_error }}</li>
+            </ul>
+        </div>
+        <div v-if="'uncaught_error_class' in data.flow_config.flow_dag.errors">
+            <h3>Uncaught Error</h3>
+            <p>{{ flow_config.flow_dag.errors.uncaught_error_class }}: {{ flow_config.flow_dag.errors.uncaught_error_content }}</p>
+        </div>
+    </div>
+    <div v-else>
+        <template v-if="data.step_state === null">
+            <div style="position: relative; left: 10px; top: 10px;">
+                <button v-on:click="$root.fetch_flow_state(data.flow_config_id)">REFRESH</button>
+                <button v-on:click="$root.flip_dag_left_to_right()">ROTATE</button>
+            </div>
+            <div style="overflow: hidden; height: calc(var(--tab-content-height) - 20px);">
+                <svg width=1800 height=1500 v-on:update="$root.fetch_flow_state(data.flow_config_id)"></svg>
+            </div>
+        </template>
+        <div v-else>
+            <batch-info :data="data"></batch-info>
+        </div>
+    </div>
+</template>
+{% endverbatim %}

@@ -1,0 +1,43 @@
+{% load static %}
+
+<!--<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>-->
+<!--<script src="https://unpkg.com/axios/dist/axios.js"></script>-->
+<!--<script src="https://d3js.org/d3.v5.js" charset="utf-8"></script>-->
+<!--<script src="https://dagrejs.github.io/project/dagre-d3/latest/dagre-d3.js"></script>-->
+<!--<script src="https://github.com/js-cookie/js-cookie/releases/download/v3.0.1/js.cookie.js"></script>-->
+
+<script src="{% static 'adf_web_ui/packages/vue.js' %}"></script>
+<script src="{% static 'adf_web_ui/packages/axios.js' %}"></script>
+<script src="{% static 'adf_web_ui/packages/d3.v5.js' %}" charset="utf-8"></script>
+<script src="{% static 'adf_web_ui/packages/dagre-d3.js' %}"></script>
+<script src="{% static 'adf_web_ui/packages/js.cookie.js' %}"></script>
+
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+<link rel="stylesheet" type="text/css" href="{% static 'adf_web_ui/style.css' %}">
+
+<link rel="shortcut icon" href="{% static 'adf_web_ui/favicon.ico' %}"/>
+
+<div class="header">
+  <a href="{% url 'flows_page' %}" class="logo">Abstract Data Flows</a>
+  <div class="header-right">
+    <a class="active" href="{% url 'flows_page' %}">Home</a>
+    {% if user.is_authenticated %}
+    <a href="{% url 'logout' %}">Log Out</a>
+    {% else %}
+    <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+  </div>
+</div>
+
+<div>
+{% block content %}{% endblock %}
+</div>
+
+{% include "./templates/dag-tab.html" %}
+{% include "./templates/cmd-tab.html" %}
+{% include "./templates/cmd-table.html" %}
+{% include "./templates/cmd-stream.html" %}
+{% include "./templates/batch-info.html" %}
+
+<script src="{% static 'adf_web_ui/components.js' %}"></script>
+<script src="{% static 'adf_web_ui/flows.js' %}"></script>

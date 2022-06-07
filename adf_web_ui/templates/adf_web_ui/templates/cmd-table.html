@@ -1,0 +1,36 @@
+{% verbatim %}
+<template id="cmd-table">
+    <div class="cmd-display" style="background-color: var(--cmd-table-background);">
+        <table class="cmd-table">
+            <colgroup>
+                <col span="1" style="width: 2%;">
+                <col span="1" style="width: 8%;">
+                <col span="1" style="width: 2%;">
+                <col span="1" style="width: 22%;">
+                <col span="1" style="width: 22%;">
+                <col span="1" style="width: 22%;">
+                <col span="1" style="width: 22%;">
+            </colgroup>
+            <thead>
+                <tr style="height: 50px; background-color: var(--table-header-color)">
+                    <th colspan="2"><button v-on:click="$root.refresh_flow_operations()">REFRESH</button></th>
+                    <th colspan="2" class="cmd-header" v-on:click="$root.set_flow_operation_sort_column('status_summary'); $root.flip_flow_operation_sort_order();">Status</th>
+                    <th class="cmd-header" v-on:click="$root.set_flow_operation_sort_column('label'); $root.flip_flow_operation_sort_order();">Label</th>
+                    <th class="cmd-header" v-on:click="$root.set_flow_operation_sort_column('start_time'); $root.flip_flow_operation_sort_order();">Start</th>
+                    <th class="cmd-header" v-on:click="$root.flip_flow_operation_sort_order(); $root.set_flow_operation_sort_column('end_time');">End</th>
+                </tr>
+            </thead>
+            <tr v-for="flow_operation in data.flow_config.flowoperation_set" :style="((data.flow_operation_id === flow_operation.id) ? 'background-color: var(--column-select-color); ' : '') + 'height: 50px;'">
+                <td class="cmd-cell"><button v-on:click="$root.delete_flow_operation(flow_operation.id)">X</button></td>
+                <td class="cmd-cell"><button v-on:click="$root.kill_flow_operation(flow_operation.id)">KILL</button></td>
+                <td class="cmd-cell" v-on:click="$root.set_flow_operation_id(flow_operation.id)" style="cursor: pointer; border-left: 1px solid black;"><span :class="'command-status ' + flow_operation.status_summary"></span></td>
+                <template v-for="attr in ['status_summary', 'label', 'start_time_pretty', 'end_time_pretty']">
+                    <td v-on:click="$root.set_flow_operation_id(flow_operation.id)" class="cmd-cell" style="border-right: 1px solid black; cursor: pointer;">
+                        {{ flow_operation[attr] }}
+                    </td>
+                </template>
+            </tr>
+        </table>
+    </div>
+</template>
+{% endverbatim %}

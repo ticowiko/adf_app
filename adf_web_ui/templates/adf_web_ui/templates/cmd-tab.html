@@ -1,0 +1,21 @@
+{% verbatim %}
+<template id="cmd-tab">
+    <div style="width: 100%;">
+        <div class="cmd-buttons">
+            <button v-on:click="$root.send_command(data.flow_config_id, 'setup-implementer', '', 'Setup Implementer')">Setup Implementer</button>
+            <button v-on:click="$root.send_command(data.flow_config_id, 'setup-flows', '__fcp__', 'Setup Flows')">Setup Flows</button>
+            <button v-on:click="$root.send_command(data.flow_config_id, 'update-code', '', 'Update Code')">Update Code</button>
+            <button v-on:click="$root.download_prebuilt()">Prebuilt Config</button>
+            <button v-on:click="$root.send_command(data.flow_config_id, 'orchestrate', '__fcp__ -s', 'Orchestrate (synchronous)')">Orchestrate (synchronous)</button>
+            <button v-on:click="$root.send_command(data.flow_config_id, 'orchestrate', '__fcp__', 'Orchestrate (asynchronous)')">Orchestrate (asynchronous)</button>
+            <button class="alert-button" v-on:click="$root.send_command(data.flow_config_id, 'setup-implementer', '-d', 'Destroy Implementer')">Destroy Implementer</button>
+        </div>
+        <div>
+            <div style="overflow: hidden;">
+                <cmd-table :data="data"></cmd-table>
+                <cmd-stream :data="data"></cmd-stream>
+            </div>
+        </div>
+    </div>
+</template>
+{% endverbatim %}
