@@ -41,6 +41,14 @@ def attempt_file_field_delete(instance, attr):
         )
 
 
+def open_read_close(file_field: FileField) -> str:
+    file_field.open()
+    file_field.seek(0)
+    ret = file_field.read().decode("utf-8")
+    file_field.close()
+    return ret
+
+
 class FlowConfig(Model):
     name = CharField(max_length=50, unique=True)
     implementer_config_file = FileField()
@@ -92,8 +100,7 @@ class FlowOperation(Model):
 
     @property
     def status_summary(self) -> str:
-        self.status.seek(0)
-        status = self.status.read().strip().decode("utf-8")
+        status = open_read_close(self.status).strip()
         if status == "0":
             return "DONE"
         elif status == "":

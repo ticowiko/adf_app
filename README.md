@@ -108,16 +108,15 @@ Synchronous orchestration stops automatically when there are no more batches to 
 If the Django server occasionally fails while complaining of `Too many open files`, you can simply increase your system resources to accommodate this. On most linux machines, the following command will do the trick :
 
 ```shell
-ulimit -Sn 10240
+ulimit -Sn 10000
 ```
 
 # AWS implementer specificities
 
 Before using the `config/implementers/implementer.aws.yaml` implementer configuration, you should set up a few things :
 
-1) Ensure that you have valid AWS credentials in your `.aws` folder. The user must have near unlimited rights as you will be creating a vast array of resources across many AWS services.
-2) In the same shell that launches the server, set a default AWS region by setting the corresponding environment variable : `export AWS_DEFAULT_REGION=YOUR-DEFAULT-REGION`.
-3) In the same shell that launches the server, set the environment variables that will be used to initialize the admin passwords for your RDS and Redshift instances : `export RDS_PW=YOUR-RDS-PW` and `export REDSHIFT_PW=YOUR-REDSHIFT-PW`.
+1) Ensure that you have valid AWS credentials in your `.aws` folder. The user must have near unlimited rights as you will be creating a vast array of resources across many AWS services. The resources will be created in the region of your aws session, either the region in your `.aws/config` file or the value of the `AWS_DEFAULT_REGION` environment variable.
+2) In the same shell that launches the server, set the environment variables that will be used to initialize the admin passwords for your RDS and Redshift instances : `export RDS_PW=YOUR-RDS-PW` and `export REDSHIFT_PW=YOUR-REDSHIFT-PW`.
 
 Once this is done, you can set up an ADF configuration as before, this time using the `implementer.aws.yaml` implementer config file, and any flow configuration file of your choosing. It is highly advised to use the `Prebuilt Config` functionality when using the AWS implementer. To do so :
 

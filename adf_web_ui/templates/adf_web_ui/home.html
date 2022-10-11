@@ -86,7 +86,7 @@ ADF UI homepage
                 Flow Config : {{ flow_config.name }}
             </div>
             <div class="tab">
-                <button :style="(flow_config_tab === 'dag') ? 'background-color: #bbbbbb;' : ''" v-on:click="set_flow_config_tab('dag'); fetch_flow_state(flow_config_id);">DAG state</button>
+                <button :style="(flow_config_tab === 'dag') ? 'background-color: #bbbbbb;' : ''" v-on:click="set_flow_config_tab('dag'); set_step_info(null, null); fetch_flow_state(flow_config_id);">DAG state</button>
                 <button :style="(flow_config_tab === 'cmd') ? 'background-color: #bbbbbb;' : ''" v-on:click="set_flow_config_tab('cmd')">Implementer commands</button>
                 <button :style="(flow_config_tab === 'fcd') ? 'background-color: #bbbbbb;' : ''" v-on:click="set_flow_config_tab('fcd')">Flow config</button>
                 <button :style="(flow_config_tab === 'icd') ? 'background-color: #bbbbbb;' : ''" v-on:click="set_flow_config_tab('icd')">Implementer config</button>

@@ -9,7 +9,7 @@ from rest_framework.serializers import (
 from ADF.components.flow_config import ADFCollection
 from ADF.exceptions import InvalidADFCollection
 
-from .models import FlowConfig, FlowOperation
+from .models import FlowConfig, FlowOperation, open_read_close
 
 
 def serialize_datetime(dt: datetime.datetime):
@@ -48,16 +48,13 @@ class FlowOperationSerializer(ModelSerializer):
         )
 
     def get_stdout_details(self, instance: FlowOperation):
-        instance.stdout.seek(0)
-        return instance.stdout.read()
+        return open_read_close(instance.stdout)
 
     def get_stderr_details(self, instance: FlowOperation):
-        instance.stderr.seek(0)
-        return instance.stderr.read()
+        return open_read_close(instance.stderr)
 
     def get_status_details(self, instance: FlowOperation):
-        instance.status.seek(0)
-        return instance.status.read()
+        return open_read_close(instance.status)
 
     def get_status_summary(self, instance: FlowOperation):
         return instance.status_summary
@@ -107,10 +104,10 @@ class FlowConfigSerializer(ModelSerializer):
             return "Improper config"
 
     def get_implementer_config_details(self, instance: FlowConfig) -> str:
-        return instance.implementer_config_file.read()
+        return open_read_close(instance.implementer_config_file)
 
     def get_flow_config_details(self, instance: FlowConfig) -> str:
-        return instance.flow_config_file.read()
+        return open_read_close(instance.flow_config_file)
 
     def get_flow_dag(self, instance: FlowConfig) -> dict:
         try:

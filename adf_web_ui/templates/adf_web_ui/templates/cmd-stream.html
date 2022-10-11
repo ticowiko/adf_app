@@ -18,10 +18,10 @@
             </span>
         </div>
         <div v-if="data.flow_operation_stream === 'stdout'" class="cmd-stream">
-            <pre v-if="data.flow_operation !== null" style="white-space: pre-line;">{{ data.n_stream_lines ? data.flow_operation.stdout_details.split('\n').slice(-data.n_stream_lines).join('\n') : data.flow_operation.stdout_details }}</pre>
+            <pre v-if="data.flow_operation !== null" style="white-space: pre-wrap;">{{ data.n_stream_lines ? data.flow_operation.stdout_details.split('\n').slice(-data.n_stream_lines).join('\n') : data.flow_operation.stdout_details }}</pre>
         </div>
         <div v-else-if="data.flow_operation_stream === 'stderr'" class="cmd-stream">
-            <pre v-if="data.flow_operation !== null" style="white-space: pre-line;">{{ data.n_stream_lines ? data.flow_operation.stderr_details.split('\n').slice(-data.n_stream_lines).join('\n') : data.flow_operation.stderr_details }}</pre>
+            <pre v-if="data.flow_operation !== null" style="white-space: pre-wrap;">{{ data.n_stream_lines ? data.flow_operation.stderr_details.split('\n').slice(-data.n_stream_lines).join('\n') : data.flow_operation.stderr_details }}</pre>
         </div>
         <div v-else class="cmd-stream">
             <h2>
