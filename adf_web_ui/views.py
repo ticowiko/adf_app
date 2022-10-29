@@ -1,7 +1,6 @@
 import os
 import yaml
-
-from wsgiref.util import FileWrapper
+import traceback
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
@@ -159,8 +158,12 @@ class FlowStateAPIView(APIView):
             print(
                 f"WARNING : Failed to load collection state, got {e.__class__.__name__}: {str(e)}"
             )
+            print(f"{'*'*10} TRACEBACK {'*'*10}")
+            print(traceback.format_exc())
+            print("*" * 31)
             raise ADFWebUIException(
-                "Failed to load collection state", f"{e.__class__.__name__}: {str(e)}"
+                "Failed to load collection state",
+                f"{e.__class__.__name__}: {str(e)}",
             )
         if {"flow_name", "step_name"} <= kwargs.keys():
             response = {}
@@ -303,5 +306,5 @@ class GeneratePrebuiltAPIView(APIView):
             ),
             content_type="text/plain",
         )
-        response['Content-Disposition'] = 'attachment; filename=prebuilt.yaml'
+        response["Content-Disposition"] = "attachment; filename=prebuilt.yaml"
         return response

@@ -6,12 +6,16 @@ from rest_framework.views import Response
 
 
 class ADFWebUIException(Exception):
-    def __init__(self, title, message):
+    def __init__(self, title: str, message: str):
         self.title = title
         self.message = message
+        self.traceback = traceback.format_exc(),
 
     def to_response(self) -> Response:
-        return Response({"title": self.title, "message": self.message}, status=400)
+        return Response(
+            {"title": self.title, "message": self.message, "traceback": self.traceback},
+            status=400,
+        )
 
 
 class ConcurrentOrchestration(ADFWebUIException):
@@ -31,6 +35,13 @@ def error_response(func: Callable):
         except Exception as e:
             print(f"{'*'*10} UNCAUGHT ERROR {'*'*10}")
             print(traceback.format_exc())
-            print('*'*36)
-            return Response({"title": "Uncaught error", "message": f"{e.__class__.__name__}: {str(e)}"}, status=400)
+            print("*" * 36)
+            return Response(
+                {
+                    "title": "Uncaught error",
+                    "message": f"{e.__class__.__name__}: {str(e)}",
+                },
+                status=400,
+            )
+
     return wrapper
